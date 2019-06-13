@@ -8,36 +8,26 @@ class GridView extends egret.Sprite {
         this.initView();
     }
 
-    private coverView: egret.Bitmap;
-    private selectedView: egret.Bitmap;
+    protected grid_sheet: egret.SpriteSheet;
 
-    private _selected: boolean;
-    private _touched: boolean;
+    protected _id: number;
+    //选择
+    protected _selected: boolean;
+    //点击
+    protected _touched: boolean;
+    protected _type: number;
+
     private gird: egret.Shape;
-    /**
-     * 实际飞机内容
-     */
-    private _type: number;
-    /**
-     * 标记飞机内容
-     */
-    private _signType: number;
-    private _status: number;
-
-    private _id: number;
-
-   
-    private headView: egret.Bitmap;
 
     /**
+     * 格子实际内容 hittingView
      * head bone12 wingL1L2R1R2,bottom,tailLR
      */
-    private gridView: egret.Bitmap;
+    protected gridView: egret.Bitmap;
 
-    private gridList = [];
+    protected initView() {
+        this.grid_sheet = RES.getRes("plane_sheet")
 
-    private initView() {
-        this._status = GridStatusEnum.COVER;
 
         let color;
         if (this._id % 2 == 1) {
@@ -58,92 +48,49 @@ class GridView extends egret.Sprite {
         this.gridView = new egret.Bitmap();
         this.gridView.width = 60;
         this.gridView.height = 60;
-        this.gridView.visible = false;
         this.addChild(this.gridView);
 
-        this.coverView = new egret.Bitmap();
-        this.coverView.texture = RES.getRes("cover_png");
-        this.coverView.width = 60;
-        this.coverView.height = 60;
-        if (this._status === GridStatusEnum.COVER) {
-            this.coverView.visible = true;
-        } else {
-            this.coverView.visible = false;
-        }
-        this.addChild(this.coverView);
+      
+        // this.gridView = new egret.Bitmap();
+        // this.gridView.width = 60;
+        // this.gridView.height = 60;
+        // this.gridView.visible = false;
+        // this.addChild(this.gridView);
 
-        this.selectedView = new egret.Bitmap();
-        this.selectedView.texture = RES.getRes("selected_png");
-        this.selectedView.width = 60;
-        this.selectedView.height = 60;
-        this.selectedView.visible = false;
-        this.addChild(this.selectedView);
+        // // this.placingView = new egret.Bitmap();
+
+        // this.coverView = new egret.Bitmap();
+        // this.coverView.texture = RES.getRes("cover_png");
+        // this.coverView.width = 60;
+        // this.coverView.height = 60;
+        // if (this._status === GridStatusEnum.COVER) {
+        //     this.coverView.visible = true;
+        // } else {
+        //     this.coverView.visible = false;
+        // }
+        // this.addChild(this.coverView);
+
+        // this.selectedView = new egret.Bitmap();
+        // this.selectedView.texture = RES.getRes("selected_png");
+        // this.selectedView.width = 60;
+        // this.selectedView.height = 60;
+        // this.selectedView.visible = false;
+        // this.addChild(this.selectedView);
 
     }
 
     public updateView() {
-        if (this._touched) {
 
-        }
-        if (this._status === GridStatusEnum.COVER) {
-            this.coverView.visible = true;
-        } else if (this._status === GridStatusEnum.KNOWN) {
-            if (this.type === GridTypeEnum.HEAD) {
-
-            } else if (this.type === GridTypeEnum.BODY) {
-
-            } else if (this.type === GridTypeEnum.MISS) {
-
-            }
-
-        } else if (this._status === GridStatusEnum.SHOW) {
-            if (GameController.getInstance().type === GameTypeEnum.GAME_TYPE_MAPING) {
-                if (this._selected) {
-                    this.coverView.visible = true;
-                    // this.gridView
-                }
-            } else if (GameController.getInstance().type === GameTypeEnum.GAME_TYPE_HITTING) {
-                this.coverView.visible = false;
-                this.gridView.visible = true;
-                if (this.type === GridTypeEnum.HEAD) {
-                    this.gridView.texture = RES.getRes("head_png");
-                } else if (this.type === GridTypeEnum.BODY) {
-                    this.gridView.texture = RES.getRes("body_png");
-                } else if (this.type === GridTypeEnum.MISS) {
-                    this.gridView.texture = RES.getRes("miss_png");
-                } else if (this.type === GridTypeEnum.UNSET) {
-                    this.gridView.texture = null;
-                }
-            }
-
-
-        } else if (this._status === GridStatusEnum.UNSHOW) {
-
-        }
         // if (this.) {
 
         // }
     }
 
     public resetView() {
-        this._status = GridStatusEnum.COVER;
-        this._type = GridTypeEnum.UNSET
-        console.log("123");
-        this.coverView.visible = true;
-        this.updateView();
-    }
 
-    public set status(value) {
-        this._status = value;
-        this.updateView();
-    }
-
-    public get status(): number {
-        return this._status;
     }
 
     public set type(value) {
-        console.log(value);
         if (this._type !== value) {
             this._type = value;
 
@@ -151,23 +98,13 @@ class GridView extends egret.Sprite {
 
         }
         if (this._type !== 0) {
-            // this.coverView.alpha = 0;
         } else {
-            // DrawUtil.setImageColor(this.coverView, 0x550000)
         }
         this.updateView();
     }
 
     public get type(): number {
         return this._type;
-    }
-
-    public set signType(value) {
-        this._signType = value;
-    }
-
-    public get signType() {
-        return this._signType;
     }
 
     public set selected(value: boolean) {

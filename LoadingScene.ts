@@ -15,7 +15,9 @@ class LoadingScene extends egret.Sprite implements RES.PromiseTaskReporter {
     private h: number = 0;
     constructor() {
         super();
+
         this.mySheet = RES.getRes("load");
+        console.log(this.mySheet);
         this.createView();
     }
 
